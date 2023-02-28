@@ -1,0 +1,16 @@
+application {
+  config {
+    baseName cadastroPessoaApp
+    applicationType monolith
+    serverPort 9001
+  }
+  entities Pessoa
+}
+  
+
+entity Pessoa {
+	nome String
+    telefone String
+    email String
+  
+}
