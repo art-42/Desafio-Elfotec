@@ -8,6 +8,13 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
+        <div class="row mb-3">
+          <label class="form-label">Upload de imagem</label>
+          <input type="file" class="form-control" accept="image/*" (change)="saveImage($event)" />
+          <div *ngIf="selectedFile != null">
+            <img [src]="selectedFile" alt="imagem pessoa" style="width: 40%; padding-top: 30px; margin-left: 30%" />
+          </div>
+        </div>
         <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
@@ -20,7 +27,15 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="cadastroPessoaApp.pessoa.telefone" for="field_telefone">Telefone</label>
-          <input type="text" class="form-control" name="telefone" id="field_telefone" data-cy="telefone" formControlName="telefone" />
+          <input
+            mask="(00) 0000-0000||(00) 00000-0000"
+            type="text"
+            class="form-control"
+            name="telefone"
+            id="field_telefone"
+            data-cy="telefone"
+            formControlName="telefone"
+          />
         </div>
 
         <div class="row mb-3">

@@ -17,6 +17,7 @@ export class PessoaUpdateComponent implements OnInit {
   pessoa: IPessoa | null = null;
 
   editForm: PessoaFormGroup = this.pessoaFormService.createPessoaFormGroup();
+  selectedFile: any = null;
 
   constructor(
     protected pessoaService: PessoaService,
@@ -69,5 +70,16 @@ export class PessoaUpdateComponent implements OnInit {
   protected updateForm(pessoa: IPessoa): void {
     this.pessoa = pessoa;
     this.pessoaFormService.resetForm(this.editForm, pessoa);
+  }
+
+  saveImage(event: any) {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(event.target.files.item(0));
+
+    reader.onload = (e: any) => {
+      console.log(e.target.result);
+      this.selectedFile = e.target.result;
+    };
   }
 }

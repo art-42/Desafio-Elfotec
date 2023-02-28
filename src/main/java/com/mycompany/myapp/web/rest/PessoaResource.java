@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Pessoa;
 import com.mycompany.myapp.repository.PessoaRepository;
+import com.mycompany.myapp.service.PessoaService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +34,11 @@ public class PessoaResource {
     private String applicationName;
 
     private final PessoaRepository pessoaRepository;
+    private final PessoaService pessoaService;
 
-    public PessoaResource(PessoaRepository pessoaRepository) {
+    public PessoaResource(PessoaRepository pessoaRepository, PessoaService pessoaService) {
         this.pessoaRepository = pessoaRepository;
+        this.pessoaService = pessoaService;
     }
 
     /**
@@ -51,6 +54,11 @@ public class PessoaResource {
         if (pessoa.getId() != null) {
             throw new BadRequestAlertException("A new pessoa cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        if (!pessoaService.validaTelefone(pessoa.getTelefone())) {
+            throw new BadRequestAlertException("Telephone is not valid.", ENTITY_NAME, "invalidtelephone");
+        }
+
         Pessoa result = pessoaRepository.save(pessoa);
         return ResponseEntity
             .created(new URI("/api/pessoas/" + result.getId()))
@@ -81,6 +89,10 @@ public class PessoaResource {
 
         if (!pessoaRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        if (!pessoaService.validaTelefone(pessoa.getTelefone())) {
+            throw new BadRequestAlertException("Telephone is not valid.", ENTITY_NAME, "invalidtelephone");
         }
 
         Pessoa result = pessoaRepository.save(pessoa);
